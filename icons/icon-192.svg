@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38ef7d" />
+      <stop offset="50%" stop-color="#11998e" />
+      <stop offset="100%" stop-color="#0f3443" />
+    </linearGradient>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00f2fe" />
+      <stop offset="100%" stop-color="#4facfe" />
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="#0d1117"/>
+  <rect x="24" y="24" width="464" height="464" rx="112" fill="none" stroke="url(#glow)" stroke-width="8" opacity="0.6"/>
+  <!-- Clock ring -->
+  <circle cx="256" cy="256" r="140" fill="none" stroke="#21262d" stroke-width="24"/>
+  <circle cx="256" cy="256" r="140" fill="none" stroke="url(#grad)" stroke-width="24" stroke-dasharray="880" stroke-dashoffset="220" stroke-linecap="round"/>
+  <!-- Clock hands -->
+  <line x1="256" y1="256" x2="256" y2="160" stroke="#f0f6fc" stroke-width="16" stroke-linecap="round"/>
+  <line x1="256" y1="256" x2="320" y2="256" stroke="url(#glow)" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="256" cy="256" r="18" fill="#58a6ff"/>
+  <!-- Small bell badge -->
+  <circle cx="370" cy="140" r="48" fill="#238636"/>
+  <path d="M370 120 C364 120 360 125 360 131 L360 144 L354 150 L354 154 L386 154 L386 150 L380 144 L380 131 C380 125 376 120 370 120 Z M367 158 C367 160 368 162 370 162 C372 162 373 160 373 158 Z" fill="#ffffff"/>
+</svg>

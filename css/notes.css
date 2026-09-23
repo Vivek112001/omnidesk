@@ -1,0 +1,152 @@
+/* Quick Notes Styling */
+.notes-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Scratchpad Section */
+.scratchpad-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scratchpad-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.scratchpad-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-orange);
+}
+
+.scratchpad-status {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.scratchpad-textarea {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: vertical;
+  min-height: 110px;
+  outline: none;
+}
+
+.scratchpad-textarea:focus {
+  border-color: var(--accent-orange);
+}
+
+/* Notes Grid Header */
+.notes-grid-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+/* Cards Grid */
+.notes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.note-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  min-height: 160px;
+}
+
+.note-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover);
+}
+
+.note-card.pinned {
+  border-color: var(--accent-blue);
+  background: rgba(22, 27, 34, 0.95);
+}
+
+.note-card.color-yellow { border-top: 4px solid var(--accent-orange); }
+.note-card.color-blue { border-top: 4px solid var(--accent-blue); }
+.note-card.color-green { border-top: 4px solid var(--accent-green); }
+.note-card.color-purple { border-top: 4px solid var(--accent-purple); }
+.note-card.color-red { border-top: 4px solid var(--accent-red); }
+
+.note-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.note-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.pin-indicator {
+  color: var(--accent-blue);
+  cursor: pointer;
+  padding: 2px;
+}
+
+.pin-indicator.inactive {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.note-card-body {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-word;
+  flex: 1;
+}
+
+.note-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 10px;
+  border-top: 1px solid rgba(48, 54, 61, 0.4);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.note-card-actions {
+  display: flex;
+  gap: 4px;
+}

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0d1117">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="OmniDesk - Personal Utility Suite: Timer, Stopwatch, To-Dos, Notes, and Journals with free cross-device cloud sync.">
+  <title>OmniDesk - Personal Utility Suite</title>
+
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="manifest" href="./manifest.json">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./css/main.css">
+  <link rel="stylesheet" href="./css/timer.css">
+  <link rel="stylesheet" href="./css/stopwatch.css">
+  <link rel="stylesheet" href="./css/todo.css">
+  <link rel="stylesheet" href="./css/notes.css">
+  <link rel="stylesheet" href="./css/journal.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Desktop Sidebar -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <div class="brand-text">
+          <h1>OmniDesk</h1>
+          <span>Utility Suite</span>
+        </div>
+      </div>
+
+      <ul class="nav-links">
+        <li class="nav-item">
+          <button class="nav-link-btn active" data-view="timer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Timer</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link-btn" data-view="stopwatch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="13" r="8"/>
+              <path d="M12 9v4l2 2"/>
+              <path d="M5 3L2 6"/>
+              <path d="M22 6l-3-3"/>
+              <path d="M12 2v3"/>
+            </svg>
+            <span>Stopwatch</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link-btn" data-view="todo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+            <span>To-Do List</span>
+            <span class="badge" id="todoNavBadge">0</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link-btn" data-view="notes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+            <span>Quick Notes</span>
+          </button>
+        </li>
+        <li class="nav-item">
+          <button class="nav-link-btn" data-view="journal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+              <circle cx="12" cy="8" r="1.5"/>
+            </svg>
+            <span>My Journals</span>
+          </button>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div class="sync-status-card" id="sidebarSyncCard" title="Configure Cloud Sync & Backups">
+          <div class="sync-info">
+            <div class="status-dot" id="sidebarSyncDot"></div>
+            <span id="sidebarSyncText">Local Storage</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <main class="main-wrapper">
+      <!-- Top Navigation Bar -->
+      <header class="top-bar">
+        <div class="view-title">
+          <span id="currentViewTitle">Timer</span>
+          <span class="view-title-tag" id="currentViewTag">FOCUS</span>
+        </div>
+
+        <div class="top-actions">
+          <span id="headerClock" style="font-family: var(--font-mono); font-size: 14px; color: var(--text-secondary);">00:00</span>
+          <button class="btn btn-secondary btn-icon" id="pwaInstallBtn" style="display: none;" title="Install App to Device">
+            📲 <span style="font-size: 12px; margin-left: 4px;">Install App</span>
+          </button>
+          <button class="icon-btn" onclick="window.app.openSyncModal()" title="Free Cloud Sync Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- View Containers -->
+      <div class="content-body">
+        <!-- 1. TIMER VIEW -->
+        <section class="app-view active" id="view-timer">
+          <div class="timer-container">
+            <!-- Circular Progress Display -->
+            <div class="timer-display-card">
+              <svg class="timer-svg" viewBox="0 0 300 300">
+                <circle class="timer-circle-bg" cx="150" cy="150" r="135"/>
+                <circle class="timer-circle-progress" id="timerCircleProgress" cx="150" cy="150" r="135"/>
+              </svg>
+              <div class="timer-text-content">
+                <div class="timer-digits" id="timerDigits">25:00</div>
+                <div class="timer-sublabel" id="timerSublabel">READY</div>
+              </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="timer-controls">
+              <button class="btn btn-primary" id="timerStartBtn">Start</button>
+              <button class="btn btn-secondary" id="timerPauseBtn" style="display: none;">Pause</button>
+              <button class="btn btn-secondary" id="timerResetBtn">Reset</button>
+            </div>
+
+            <!-- Presets & Custom Input -->
+            <div class="presets-section">
+              <div class="section-label">
+                <span>Quick Presets</span>
+                <span style="font-weight: normal; color: var(--text-muted); font-size: 11px;">Press Space to Start/Pause</span>
+              </div>
+              <div class="presets-grid">
+                <button class="preset-chip" data-minutes="1">1 min</button>
+                <button class="preset-chip" data-minutes="5">5 min</button>
+                <button class="preset-chip" data-minutes="10">10 min</button>
+                <button class="preset-chip" data-minutes="15">15 min</button>
+                <button class="preset-chip active" data-minutes="25">25 min (Pomodoro)</button>
+                <button class="preset-chip" data-minutes="30">30 min</button>
+                <button class="preset-chip" data-minutes="45">45 min</button>
+                <button class="preset-chip" data-minutes="60">1 Hour</button>
+              </div>
+
+              <!-- Custom Duration Inputs -->
+              <div class="custom-time-inputs">
+                <div class="time-input-group">
+                  <input type="number" id="timerInputHours" class="time-input-box" min="0" max="99" value="00">
+                  <span class="time-input-label">Hours</span>
+                </div>
+                <span class="time-colon">:</span>
+                <div class="time-input-group">
+                  <input type="number" id="timerInputMinutes" class="time-input-box" min="0" max="59" value="25">
+                  <span class="time-input-label">Mins</span>
+                </div>
+                <span class="time-colon">:</span>
+                <div class="time-input-group">
+                  <input type="number" id="timerInputSeconds" class="time-input-box" min="0" max="59" value="00">
+                  <span class="time-input-label">Secs</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sound & Volume Settings -->
+            <div class="sound-settings-card">
+              <div class="sound-control-group">
+                <label class="form-label" style="margin: 0;">Alarm Ring Tone:</label>
+                <select id="timerSoundSelect">
+                  <option value="digital">Digital Alarm Beep</option>
+                  <option value="chime">Ascending Chime</option>
+                  <option value="bell">Harmonic Bell</option>
+                  <option value="gong">Deep Gong</option>
+                </select>
+              </div>
+
+              <div class="sound-control-group">
+                <input type="range" id="timerVolumeSlider" min="0.1" max="1" step="0.05" value="0.8" style="width: 90px;" title="Alarm Volume">
+                <button class="btn btn-secondary btn-icon" id="testSoundBtn" title="Test Alarm Sound">
+                  🔊 <span style="font-size: 12px; margin-left: 4px;">Test Ring</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. STOPWATCH VIEW -->
+        <section class="app-view" id="view-stopwatch">
+          <div class="stopwatch-container">
+            <div class="stopwatch-display-card">
+              <div class="stopwatch-digits-group">
+                <span class="stopwatch-time-main" id="stopwatchMainTime">00:00</span>
+                <span class="stopwatch-time-ms" id="stopwatchMsTime">.00</span>
+              </div>
+            </div>
+
+            <div class="stopwatch-controls">
+              <button class="btn btn-primary" id="stopwatchStartBtn">Start</button>
+              <button class="btn btn-secondary" id="stopwatchPauseBtn" style="display: none;">Pause</button>
+              <button class="btn btn-secondary" id="stopwatchLapBtn" disabled>Lap</button>
+              <button class="btn btn-secondary" id="stopwatchResetBtn">Reset</button>
+            </div>
+
+            <div class="laps-card" id="stopwatchLapsCard" style="display: none;">
+              <div class="laps-header">
+                <span style="font-weight: 600; font-size: 14px;">Recorded Laps</span>
+                <span style="font-size: 12px; color: var(--text-muted);">Split & Lap times</span>
+              </div>
+              <div class="laps-list-container">
+                <table class="laps-table">
+                  <thead>
+                    <tr>
+                      <th>Lap</th>
+                      <th>Lap Time</th>
+                      <th>Overall Time</th>
+                    </tr>
+                  </thead>
+                  <tbody id="stopwatchLapsList"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. TO-DO VIEW -->
+        <section class="app-view" id="view-todo">
+          <div class="todo-container">
+            <!-- Add Task -->
+            <div class="todo-add-box">
+              <div class="todo-input-row">
+                <input type="text" id="todoInputTitle" class="todo-quick-input" placeholder="What needs to be done? Press Enter to add...">
+                <button class="btn btn-primary" id="todoAddBtn">Add Task</button>
+              </div>
+              <div class="todo-options-row">
+                <div class="todo-meta-selects">
+                  <select id="todoSelectCategory">
+                    <option value="Personal">Personal</option>
+                    <option value="Work">Work</option>
+                    <option value="Study">Study</option>
+                    <option value="Health">Health</option>
+                    <option value="Ideas">Ideas</option>
+                  </select>
+                  <select id="todoSelectPriority">
+                    <option value="medium">Medium Priority</option>
+                    <option value="urgent">Urgent</option>
+                    <option value="high">High</option>
+                    <option value="low">Low</option>
+                  </select>
+                  <input type="date" id="todoInputDueDate" title="Due Date">
+                </div>
+              </div>
+            </div>
+
+            <!-- Filter & Search -->
+            <div class="todo-filter-bar">
+              <div class="todo-category-tabs" id="todoCategoryTabs">
+                <button class="category-tab active" data-category="all">All</button>
+                <button class="category-tab" data-category="Personal">Personal</button>
+                <button class="category-tab" data-category="Work">Work</button>
+                <button class="category-tab" data-category="Study">Study</button>
+                <button class="category-tab" data-category="Ideas">Ideas</button>
+              </div>
+
+              <div class="todo-search-box">
+                <svg class="todo-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                </svg>
+                <input type="text" id="todoSearchInput" class="input-text" placeholder="Search tasks...">
+              </div>
+            </div>
+
+            <!-- Task List -->
+            <ul class="todo-list" id="todoList"></ul>
+          </div>
+        </section>
+
+        <!-- 4. QUICK NOTES VIEW -->
+        <section class="app-view" id="view-notes">
+          <div class="notes-container">
+            <!-- Scratchpad -->
+            <div class="scratchpad-card">
+              <div class="scratchpad-header">
+                <div class="scratchpad-title">
+                  <span>⚡ Quick Scratchpad</span>
+                </div>
+                <span class="scratchpad-status" id="scratchpadStatus">Auto-saved</span>
+              </div>
+              <textarea id="scratchpadTextarea" class="scratchpad-textarea" placeholder="Jot down quick thoughts, links, or numbers... automatically saves as you type."></textarea>
+            </div>
+
+            <!-- Saved Notes Header -->
+            <div class="notes-grid-header">
+              <h3 style="font-size: 17px; font-weight: 700;">Pinned & Saved Notes</h3>
+              <div style="display: flex; gap: 10px; align-items: center;">
+                <input type="text" id="notesSearchInput" class="input-text" placeholder="Search notes..." style="width: 200px;">
+                <button class="btn btn-primary" id="openAddNoteBtn">+ Add Note</button>
+              </div>
+            </div>
+
+            <!-- Notes Grid -->
+            <div class="notes-grid" id="notesGrid"></div>
+          </div>
+        </section>
+
+        <!-- 5. MY JOURNALS VIEW -->
+        <section class="app-view" id="view-journal">
+          <div class="journal-container">
+            <!-- View Tabs -->
+            <div class="journal-view-tabs">
+              <button class="journal-tab-btn active" id="journalTabWrite">✍️ Daily Entry</button>
+              <button class="journal-tab-btn" id="journalTabArchive">📚 Past Entries Archive</button>
+              <div style="margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--accent-purple);">
+                <span>🔥 Streak:</span>
+                <strong id="journalStreakCount">0 days</strong>
+              </div>
+            </div>
+
+            <!-- Write View -->
+            <div id="journalWriteContainer" style="display: flex; flex-direction: column; gap: 18px;">
+              <!-- Date Bar -->
+              <div class="journal-date-bar">
+                <div class="date-nav-controls">
+                  <button class="btn btn-secondary btn-icon" id="journalPrevDayBtn" title="Previous Day">◀</button>
+                  <span class="date-current-display" id="journalDateDisplay">Today</span>
+                  <button class="btn btn-secondary btn-icon" id="journalNextDayBtn" title="Next Day">▶</button>
+                  <button class="btn btn-secondary" id="journalTodayBtn" style="padding: 6px 12px; font-size: 12px;">Today</button>
+                </div>
+                <input type="date" id="journalDateInput" class="journal-date-input">
+              </div>
+
+              <!-- Mood Tracker -->
+              <div class="mood-picker-card">
+                <div class="section-label">Today's Mood</div>
+                <div class="mood-options-group">
+                  <button class="mood-btn selected" data-mood="😊"><span class="mood-emoji">😊</span> Great</button>
+                  <button class="mood-btn" data-mood="😌"><span class="mood-emoji">😌</span> Peaceful</button>
+                  <button class="mood-btn" data-mood="⚡"><span class="mood-emoji">⚡</span> Productive</button>
+                  <button class="mood-btn" data-mood="😐"><span class="mood-emoji">😐</span> Neutral</button>
+                  <button class="mood-btn" data-mood="🌧"><span class="mood-emoji">🌧</span> Rough</button>
+                </div>
+              </div>
+
+              <!-- Editor -->
+              <div class="journal-editor-card">
+                <div class="section-label">Reflection Prompts</div>
+                <div class="journal-prompts-row">
+                  <span class="prompt-chip" data-prompt="What went exceptionally well today?">🌟 What went well?</span>
+                  <span class="prompt-chip" data-prompt="One thing I am genuinely grateful for today:">🙏 What I'm grateful for</span>
+                  <span class="prompt-chip" data-prompt="Key challenge faced & how I approached it:">💡 Key challenge & solution</span>
+                  <span class="prompt-chip" data-prompt="Top focus for tomorrow:">🎯 Focus for tomorrow</span>
+                </div>
+
+                <input type="text" id="journalTitleInput" class="journal-title-input" placeholder="Title for today's reflection...">
+                <textarea id="journalContentInput" class="journal-textarea" placeholder="Write freely about your day, accomplishments, lessons learned..."></textarea>
+
+                <div class="journal-footer-bar">
+                  <span id="journalWordCount">0 words · 0 chars</span>
+                  <span id="journalSaveStatus">All changes saved</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Archive View -->
+            <div id="journalArchiveContainer" class="journal-archive-container" style="display: none;">
+              <div class="archive-search-bar">
+                <input type="text" id="journalArchiveSearch" class="input-text" placeholder="Search past journal reflections by keyword, date, or mood emoji...">
+              </div>
+              <div id="journalArchiveList" style="display: flex; flex-direction: column; gap: 12px;"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-nav">
+      <ul class="mobile-nav-list">
+        <li>
+          <button class="mobile-nav-btn active" data-view="timer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <span>Timer</span>
+          </button>
+        </li>
+        <li>
+          <button class="mobile-nav-btn" data-view="stopwatch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="13" r="8"/>
+              <path d="M12 9v4l2 2"/>
+            </svg>
+            <span>Stopwatch</span>
+          </button>
+        </li>
+        <li>
+          <button class="mobile-nav-btn" data-view="todo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M9 11l3 3L22 4"/>
+              <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>
+            </svg>
+            <span>To-Dos</span>
+          </button>
+        </li>
+        <li>
+          <button class="mobile-nav-btn" data-view="notes">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            </svg>
+            <span>Notes</span>
+          </button>
+        </li>
+        <li>
+          <button class="mobile-nav-btn" data-view="journal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <circle cx="12" cy="8" r="1.5"/>
+            </svg>
+            <span>Journal</span>
+          </button>
+        </li>
+        <li>
+          <button class="mobile-nav-btn" data-view="settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+            <span>Sync</span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- RINGING ALARM FULLSCREEN OVERLAY -->
+  <div class="ringing-overlay" id="ringingOverlay">
+    <div class="ringing-dialog">
+      <div class="ringing-icon">⏰</div>
+      <div>
+        <h2 class="ringing-title">Time's Up!</h2>
+        <p class="ringing-subtitle">Your fixed timer duration has finished.</p>
+      </div>
+      <button class="btn-stop-alarm" id="stopAlarmBtn">STOP ALARM</button>
+    </div>
+  </div>
+
+  <!-- ADD NOTE MODAL -->
+  <div class="modal-overlay" id="addNoteModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Create New Note</h3>
+        <button class="icon-btn" id="closeNoteModalBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Title</label>
+          <input type="text" id="modalNoteTitle" class="input-text" placeholder="Note title...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Note Content</label>
+          <textarea id="modalNoteBody" class="input-textarea" placeholder="Write note contents..."></textarea>
+        </div>
+        <div style="display: flex; gap: 14px; align-items: center;">
+          <div class="form-group" style="flex: 1;">
+            <label class="form-label">Color Accent</label>
+            <select id="modalNoteColor">
+              <option value="blue">Blue</option>
+              <option value="yellow">Yellow</option>
+              <option value="green">Green</option>
+              <option value="purple">Purple</option>
+              <option value="red">Red</option>
+            </select>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px; margin-top: 18px;">
+            <input type="checkbox" id="modalNotePin" style="width: 18px; height: 18px; cursor: pointer;">
+            <label for="modalNotePin" style="font-size: 13px; cursor: pointer;">Pin to top</label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="saveNoteModalBtn">Save Note</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOUD SYNC & BACKUP MODAL (100% Free via GitHub Gist) -->
+  <div class="modal-overlay" id="syncSettingsModal">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span>☁️</span>
+          <h3>Cross-Device Sync & Backups</h3>
+        </div>
+        <button class="icon-btn" id="closeSyncModalBtn">✕</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.5;">
+          <strong>100% Free Cross-Device Sync:</strong> Sync your notes, to-dos, and journals between your phone, tablet, and PC without any third-party accounts or fees using a private GitHub Gist.
+        </p>
+
+        <div class="form-group">
+          <label class="form-label">GitHub Personal Access Token (Gist Scope)</label>
+          <input type="password" id="syncGithubToken" class="input-text" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+          <span style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">
+            Create a free token on GitHub: Settings &gt; Developer Settings &gt; Personal access tokens &gt; Check "gist".
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Private Gist ID (Leave empty to auto-create)</label>
+          <input type="text" id="syncGistId" class="input-text" placeholder="e.g. 7b2a659f1c...">
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <input type="checkbox" id="syncAutoCheckbox" style="width: 16px; height: 16px;">
+          <label for="syncAutoCheckbox" style="font-size: 13px; color: var(--text-primary);">
+            Enable automatic background sync on change
+          </label>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 6px;">
+          <button class="btn btn-secondary" id="syncPushBtn" style="flex: 1;">⬆ Sync Now (Upload)</button>
+          <button class="btn btn-secondary" id="syncPullBtn" style="flex: 1;">⬇ Fetch from Cloud (Download)</button>
+        </div>
+
+        <div style="display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-muted); padding: 8px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);">
+          <span>Last Synced: <strong id="syncLastSyncedLabel">Never</strong></span>
+          <button class="btn btn-primary" id="saveSyncSettingsBtn" style="padding: 6px 14px; font-size: 12px;">Save Token</button>
+        </div>
+
+        <!-- File Backup Option -->
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
+          <label class="form-label">One-Click File Backup & Restore</label>
+          <div style="display: flex; gap: 10px;">
+            <button class="btn btn-secondary" id="exportJsonBtn" style="flex: 1;">📥 Export Backup (.json)</button>
+            <button class="btn btn-secondary" id="triggerImportBtn" style="flex: 1;">📤 Restore from File</button>
+            <input type="file" id="importJsonFileInput" accept=".json" style="display: none;">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Application Logic Scripts -->
+  <script src="./js/storage.js"></script>
+  <script src="./js/audio.js"></script>
+  <script src="./js/timer.js"></script>
+  <script src="./js/stopwatch.js"></script>
+  <script src="./js/todo.js"></script>
+  <script src="./js/notes.js"></script>
+  <script src="./js/journal.js"></script>
+  <script src="./js/pwa.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
