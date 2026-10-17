@@ -115,6 +115,9 @@
           <button class="btn btn-secondary btn-icon" id="pwaInstallBtn" style="display: none;" title="Install App to Device">
             📲 <span style="font-size: 12px; margin-left: 4px;">Install App</span>
           </button>
+          <button class="icon-btn" id="headerLockBtn" title="Lock App Now">
+            🔒
+          </button>
           <button class="icon-btn" onclick="window.app.openSyncModal()" title="Free Cloud Sync Settings">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/>
@@ -550,8 +553,32 @@
           <button class="btn btn-primary" id="saveSyncSettingsBtn" style="padding: 6px 14px; font-size: 12px;">Save Token</button>
         </div>
 
+        <!-- Security & Master Password Lock (AES-256) -->
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-color);">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <label class="form-label" style="margin: 0;">Security & Master Lock (AES-256)</label>
+            <span id="secLockStatusBadge" style="font-size: 11px; font-weight: 700; color: var(--text-muted);">Disabled</span>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding: 6px 0;">
+            <span style="font-size: 13px; color: var(--text-primary);">Enable Password / PIN Lock</span>
+            <input type="checkbox" id="secEnableLockToggle" style="width: 18px; height: 18px; cursor: pointer;">
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+            <span style="font-size: 13px; color: var(--text-secondary);">Auto-lock when inactive:</span>
+            <select id="secAutoLockSelect" style="width: 140px; padding: 6px 10px; font-size: 12px;">
+              <option value="5">After 5 mins</option>
+              <option value="15" selected>After 15 mins</option>
+              <option value="30">After 30 mins</option>
+              <option value="0">Never auto-lock</option>
+            </select>
+          </div>
+          <div style="margin-top: 6px;">
+            <button class="btn btn-secondary" id="secChangePwdBtn" style="display: none; width: 100%; font-size: 13px;">Change Master Password</button>
+          </div>
+        </div>
+
         <!-- File Backup Option -->
-        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-color);">
           <label class="form-label">One-Click File Backup & Restore</label>
           <div style="display: flex; gap: 10px;">
             <button class="btn btn-secondary" id="exportJsonBtn" style="flex: 1;">📥 Export Backup (.json)</button>
@@ -563,10 +590,44 @@
     </div>
   </div>
 
+  <!-- AUTHENTICATION MASTER LOCK SCREEN OVERLAY -->
+  <div class="auth-lock-overlay" id="authLockScreen">
+    <div class="auth-card">
+      <div class="auth-icon-wrap">🔒</div>
+      <div>
+        <h2 id="authScreenTitle">OmniDesk Locked</h2>
+        <p id="authScreenDesc">Enter your Master Password or PIN to unlock your productivity workspace.</p>
+      </div>
+
+      <div class="auth-input-wrapper">
+        <input type="password" id="authPasswordInput" class="input-text" placeholder="Enter password or PIN..." autocomplete="current-password">
+        <button class="auth-eye-btn" id="authToggleEye" type="button" title="Show/Hide Password">👁</button>
+      </div>
+
+      <!-- Setup confirmation field (only shown during initial setup or change) -->
+      <div class="auth-input-wrapper" id="authConfirmWrapper" style="display: none;">
+        <input type="password" id="authPasswordConfirm" class="input-text" placeholder="Confirm password..." autocomplete="new-password">
+      </div>
+
+      <div class="auth-error-text" id="authErrorMsg"></div>
+
+      <!-- Unlock mode buttons -->
+      <div class="auth-actions-group" id="authUnlockGroup">
+        <button class="btn btn-primary" id="authUnlockBtn" style="width: 100%; padding: 12px; font-size: 15px;">Unlock Workspace</button>
+      </div>
+
+      <!-- Setup mode buttons -->
+      <div class="auth-actions-group" id="authSetupGroup" style="display: none;">
+        <button class="btn btn-primary" id="authSetupBtn" style="width: 100%; padding: 12px; font-size: 15px;">Activate Password Lock</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
 
   <!-- Application Logic Scripts -->
+  <script src="./js/auth.js"></script>
   <script src="./js/storage.js"></script>
   <script src="./js/audio.js"></script>
   <script src="./js/timer.js"></script>

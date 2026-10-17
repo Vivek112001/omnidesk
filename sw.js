@@ -1,4 +1,4 @@
-const CACHE_NAME = 'omnidesk-v1';
+const CACHE_NAME = 'omnidesk-v2';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -10,6 +10,7 @@ const ASSETS_TO_CACHE = [
   './css/todo.css',
   './css/notes.css',
   './css/journal.css',
+  './js/auth.js',
   './js/storage.js',
   './js/audio.js',
   './js/timer.js',

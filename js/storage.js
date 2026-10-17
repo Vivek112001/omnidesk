@@ -61,8 +61,9 @@ class StorageManager {
 
   async getCollection(name, defaultValue = []) {
     await this.initPromise;
+    let rawData;
     if (this.db) {
-      return new Promise((resolve) => {
+      rawData = await new Promise((resolve) => {
         try {
           const transaction = this.db.transaction(['collections'], 'readonly');
           const store = transaction.objectStore('collections');
@@ -83,21 +84,44 @@ class StorageManager {
       // LocalStorage fallback
       try {
         const val = localStorage.getItem(`omnidesk_${name}`);
-        return val ? JSON.parse(val) : defaultValue;
+        rawData = val ? JSON.parse(val) : defaultValue;
       } catch (e) {
+        rawData = defaultValue;
+      }
+    }
+
+    // Transparent Decryption if data is encrypted
+    if (window.authManager && typeof rawData === 'string' && rawData.startsWith('ENC:')) {
+      try {
+        const decrypted = await window.authManager.decryptData(rawData);
+        return decrypted !== null ? decrypted : defaultValue;
+      } catch (e) {
+        console.warn('Decryption error for collection', name, e);
         return defaultValue;
       }
     }
+    return rawData;
   }
 
   async saveCollection(name, data) {
     await this.initPromise;
+    let toStore = data;
+
+    // Encrypt sensitive data before persisting if master lock is active
+    if (window.authManager && window.authManager.authConfig?.enabled && window.authManager.activeKey && name !== 'settings') {
+      try {
+        toStore = await window.authManager.encryptData(data);
+      } catch (e) {
+        console.warn('Failed to encrypt before saving:', e);
+      }
+    }
+
     if (this.db) {
       return new Promise((resolve, reject) => {
         try {
           const transaction = this.db.transaction(['collections'], 'readwrite');
           const store = transaction.objectStore('collections');
-          store.put({ id: name, data: data, updatedAt: Date.now() });
+          store.put({ id: name, data: toStore, updatedAt: Date.now() });
           transaction.oncomplete = () => {
             this.emit(`change:${name}`, data);
             this.handleAutoCloudSync();
@@ -110,7 +134,7 @@ class StorageManager {
       });
     } else {
       try {
-        localStorage.setItem(`omnidesk_${name}`, JSON.stringify(data));
+        localStorage.setItem(`omnidesk_${name}`, JSON.stringify(toStore));
         this.emit(`change:${name}`, data);
         this.handleAutoCloudSync();
         return true;

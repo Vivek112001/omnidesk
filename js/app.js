@@ -12,6 +12,23 @@ class AppController {
   async init() {
     this.toastContainer = document.getElementById('toastContainer');
 
+    // Initialize Security & Authentication
+    if (window.authManager) {
+      await window.authManager.init();
+
+      window.authManager.on('unlocked', async () => {
+        // Refresh modules to load and render decrypted data
+        await window.todoModule?.init();
+        await window.notesModule?.init();
+        await window.journalModule?.init();
+      });
+
+      window.authManager.on('locked', () => {
+        // Switch to neutral timer view on lock
+        this.switchView('timer');
+      });
+    }
+
     // Initialize all modules
     window.timerModule?.init();
     window.stopwatchModule?.init();

@@ -36,6 +36,12 @@ Designed to be hosted with zero cost on **GitHub Pages** and installed as a stan
 - Searchable archive to search your past reflections by keyword, date, or mood.
 - Streak counter tracking consecutive journaling days.
 
+### 6. 🔒 Authentication & Bank-Grade Encryption (Complete Privacy)
+- **Master Password / PIN Lock Screen**: Protect your personal workspace so nobody borrowing your phone or laptop can read your journals or notes.
+- **Client-Side AES-256-GCM Encryption**: Uses browser-native Web Crypto API (PBKDF2 with 100,000 iterations). Your data is encrypted before saving to `IndexedDB` or syncing to GitHub Gist.
+- **Auto-Lock on Inactivity**: Automatically locks the app after 5, 15, or 30 minutes of idle time.
+- **Instant One-Click Lock**: Click the **🔒 Lock** button in the header bar anytime to immediately lock the screen.
+
 ---
 
 ## ☁️ 100% Free Cross-Device Cloud Sync
